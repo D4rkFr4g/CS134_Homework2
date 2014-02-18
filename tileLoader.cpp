@@ -103,6 +103,7 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 	GLfloat tSizeY = (GLfloat) 1.0 / height;
 
 	level = new TileLevel(width, height);
+	
 
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
@@ -123,5 +124,6 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 
 	// Cleanup
 	infile.close();
-	delete []tilesRead;
+	delete[] tilesRead;
+	//free(tilesRead);
 }
