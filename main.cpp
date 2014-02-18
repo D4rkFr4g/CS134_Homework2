@@ -56,8 +56,13 @@ static void loadSprites()
 
 static void loadLevel()
 {
+	using namespace std;
 	// Load TileLevel
 	tileLoader::loadTiles("./Levels/level0.txt", &level0);
+
+	for (int i = 0; i < level0.tilesWidth; i++)
+		for (int j = 0; j < level0.tilesHeight; i++)
+			cout << "[" << i << "][" << j << "] = " << level0.tileArray[i][j].x << ", " << level0.tileArray[i][j].y << endl;
 }
 
 using namespace std;
@@ -154,26 +159,18 @@ static void keyboard()
 	if (kbState[ SDL_SCANCODE_LEFT ] && !kbPrevState[ SDL_SCANCODE_LEFT ])
 	{
 		g_cam.updateX(-camDelta);
-		cout << "camX = " << g_cam.x << endl;
-		cout << "camY = " << g_cam.y << endl;
 	}
 	else if (kbState[ SDL_SCANCODE_RIGHT ] && !kbPrevState[ SDL_SCANCODE_RIGHT ])
 	{
 		g_cam.updateX(camDelta);
-		cout << "camX = " << g_cam.x << endl;
-		cout << "camY = " << g_cam.y << endl;
 	}
 	else if (kbState[ SDL_SCANCODE_UP ] && !kbPrevState[ SDL_SCANCODE_UP ])
 	{
 		g_cam.updateY(camDelta);
-		cout << "camX = " << g_cam.x << endl;
-		cout << "camY = " << g_cam.y << endl;
 	}
 	else if (kbState[ SDL_SCANCODE_DOWN ] && !kbPrevState[ SDL_SCANCODE_DOWN])
 	{
-		g_cam.updateX(-camDelta);
-		cout << "camX = " << g_cam.x << endl;
-		cout << "camY = " << g_cam.y << endl;
+		g_cam.updateY(-camDelta);
 	}
 	else if (kbState[ SDL_SCANCODE_ESCAPE ])
 	{

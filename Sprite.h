@@ -1,5 +1,6 @@
 #pragma once
-#include<GL/glew.h>
+#include <GL/glew.h>
+#include <iostream>
 #include "DrawUtils.h"
 
 class Sprite
@@ -16,6 +17,7 @@ public:
 	void Sprite::draw(void);
 	void Sprite::draw(int camX, int camY);
 	void Sprite::drawTile(int camX, int camY);
+	void Sprite::print();
 
 	// Variables
 	GLuint texture;

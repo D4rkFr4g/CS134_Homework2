@@ -118,12 +118,11 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 			x = j * tileWidth;
 			y = i * tileHeight;
 
-			level->tileArray[i][j] = Sprite(tileSet, x, y, tileWidth, tileHeight, tu, tv, tSizeX, tSizeY);
+			level->tileArray[j][i] = Sprite(tileSet, x, y, tileWidth, tileHeight, tu, tv, tSizeX, tSizeY);
 			tileIndex++;
 		}
 
 	// Cleanup
 	infile.close();
 	delete[] tilesRead;
-	//free(tilesRead);
 }

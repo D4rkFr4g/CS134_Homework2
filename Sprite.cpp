@@ -61,3 +61,10 @@
 	{
 		glDrawSprite(texture, x - camX, y - camY, width, height, tu, tv, tSizeX, tSizeY);
 	}
+
+	void Sprite::print()
+	{
+		using namespace std;
+		cout << "x = " << x << "\t y = " << y << endl;
+
+	}

@@ -25,7 +25,7 @@ TileLevel::~TileLevel(void)
 	{
 		delete[] tileArray[i];
 	}
-	//delete[] tileArray;
+	delete[] tileArray;
 }
 
 
