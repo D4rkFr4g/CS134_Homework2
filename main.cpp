@@ -135,7 +135,7 @@ int main( void )
 		clearBackground();
 		level0.drawLevel(g_cam.x, g_cam.y);
 		for (int i = 0; i < g_spriteArraySize; i++)
-			spriteArray[i].draw();
+			spriteArray[i].draw(g_cam.x, g_cam.y);
 
 		SDL_GL_SwapWindow( window );
 	}
@@ -156,21 +156,21 @@ static void clearBackground()
 
 static void keyboard()
 {
-	if (kbState[ SDL_SCANCODE_LEFT ] && !kbPrevState[ SDL_SCANCODE_LEFT ])
+	if (kbState[ SDL_SCANCODE_LEFT ])
 	{
 		g_cam.updateX(-camDelta);
 	}
-	else if (kbState[ SDL_SCANCODE_RIGHT ] && !kbPrevState[ SDL_SCANCODE_RIGHT ])
+	else if (kbState[ SDL_SCANCODE_RIGHT ])
 	{
 		g_cam.updateX(camDelta);
 	}
-	else if (kbState[ SDL_SCANCODE_UP ] && !kbPrevState[ SDL_SCANCODE_UP ])
-	{
-		g_cam.updateY(camDelta);
-	}
-	else if (kbState[ SDL_SCANCODE_DOWN ] && !kbPrevState[ SDL_SCANCODE_DOWN])
+	else if (kbState[ SDL_SCANCODE_UP ])
 	{
 		g_cam.updateY(-camDelta);
+	}
+	else if (kbState[ SDL_SCANCODE_DOWN ])
+	{
+		g_cam.updateY(camDelta);
 	}
 	else if (kbState[ SDL_SCANCODE_ESCAPE ])
 	{
