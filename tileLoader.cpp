@@ -4,10 +4,11 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 {
 	using namespace std;
 	string line = "";
-	int width, height, tileWidth, tileHeight;
+	int x, y, width, height, tileWidth, tileHeight;
 	string tileFile = "";
-	int *tilesRead;
+	int *tilesRead = NULL;
 	int tileIndex = 0;
+	GLfloat tu, tv;
 
 	// Opens a Flare map file .txt
 	ifstream infile;
@@ -65,8 +66,7 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 		cout << "tileSet = " << tileFile << endl;
 	}
 
-	// Load Tileset Texture
-	GLuint tileSet = glTexImageTGAFile(tileFile.c_str(), NULL, NULL);
+	// Create array for tile data
 	tilesRead = new int [width * height];
 
 	// Read Data
@@ -85,16 +85,43 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 			}
 		}
 	}
+	
+	// Debug Check all tiles read
+	if (0)
+	{
+		for (int i = 0; i < width * height; i++)
+			cout << "tile[" << i << "] = " << tilesRead[i] << endl;
+		cout << "Tiles Read = " << tileIndex << endl;
+	}
 
-		// Debug Check all tiles read
-		if (1)
+	// Load Tileset Texture
+	GLuint tileSet = glTexImageTGAFile(tileFile.c_str(), NULL, NULL);
+
+	// Load tiles to level
+	tileIndex = 0;
+	GLfloat tSizeX = (GLfloat) 1.0 / width;
+	GLfloat tSizeY = (GLfloat) 1.0 / height;
+
+	level = new TileLevel(width, height);
+
+	for (int i = 0; i < height; i++)
+		for (int j = 0; j < width; j++)
 		{
-			for (int i = 0; i < width * height; i++)
-				cout << "tile[" << i << "] = " << tilesRead[i] << endl;
+			// Find Row / Column texture coords
+			int tilePos = tilesRead[tileIndex];
+			int row = tilePos % height + 1;
+			int column = tilePos % width + 1;
+			tu = row * tSizeX;
+			tv = column * tSizeY;
+			
+			x = j * tileWidth;
+			y = i * tileHeight;
+
+			level->tileArray[i][j] = Sprite(tileSet, x, y, tileWidth, tileHeight, tu, tv, tSizeX, tSizeY);
+			tileIndex++;
 		}
 
 	// Cleanup
 	infile.close();
-	delete tilesRead;
+	delete []tilesRead;
 }
-

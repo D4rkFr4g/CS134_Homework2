@@ -13,7 +13,8 @@
 		y = 0;
 		this->tu = 0;
 		this->tv = 0;
-		this->tSize = 1;
+		this->tSizeX = 1;
+		this->tSizeY = 1;
 	}
 
 	Sprite::Sprite(GLuint texture, int x, int y, int width, int height)
@@ -25,10 +26,11 @@
 		this->y = y;
 		this->tu = 0;
 		this->tv = 0;
-		this->tSize = 1;
+		this->tSizeX = 1;
+		this->tSizeY = 1;
 	}
 
-	Sprite::Sprite(GLuint texture, int x, int y, int width, int height, int tu, int tv, int tSize)
+	Sprite::Sprite(GLuint texture, int x, int y, int width, int height, GLfloat tu, GLfloat tv, GLfloat tSizeX, GLfloat tSizeY)
 	{
 		this->texture = texture;
 		this->width = width;
@@ -37,7 +39,8 @@
 		this->y = y;
 		this->tu = tu;
 		this->tv = tv;
-		this->tSize = tSize;
+		this->tSizeX = tSizeX;
+		this->tSizeY = tSizeY;
 	}
 
 	Sprite::~Sprite(void)
@@ -56,5 +59,5 @@
 
 	void Sprite::drawTile(int camX, int camY)
 	{
-		glDrawSprite(texture, x - camX, y - camY, width, height, tu, tv, tSize);
+		glDrawSprite(texture, x - camX, y - camY, width, height, tu, tv, tSizeX, tSizeY);
 	}

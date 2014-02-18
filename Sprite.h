@@ -9,7 +9,7 @@ public:
 	Sprite(void);
 	Sprite::Sprite(GLuint texture, int width, int height);
 	Sprite::Sprite(GLuint texture, int x, int y, int width, int height);
-	Sprite::Sprite(GLuint texture, int x, int y, int width, int height, int tu, int tv, int tSize);
+	Sprite::Sprite(GLuint texture, int x, int y, int width, int height, GLfloat tu, GLfloat tv, GLfloat tSizeX, GLfloat tSizeY);
 	~Sprite(void);
 
 	//Functions
@@ -21,8 +21,8 @@ public:
 	GLuint texture;
 	int width, height;
 	int x, y;
-	int tu, tv;
-	int tSize;
+	GLfloat tu, tv;
+	GLfloat tSizeX, tSizeY;
 
 private:
 

@@ -116,17 +116,17 @@ void glDrawSprite( GLuint tex, int x, int y, int w, int h )
    glEnd();
 }
 
-void glDrawSprite( GLuint tex, int x, int y, int w, int h, int tu, int tv, int tSize )
+void glDrawSprite( GLuint tex, int x, int y, int w, int h, GLfloat tu, GLfloat tv, GLfloat tSizeX, GLfloat tSizeY )
 {
 	glBindTexture( GL_TEXTURE_2D, tex );
    glBegin( GL_QUADS );
    {
 		glColor3ub( 255, 255, 255 );
-		glTexCoord2f( tu, tv + tSize );
+		glTexCoord2f( tu, tv + tSizeY );
 		glVertex2i( x, y );
-		glTexCoord2f( tu + tSize, tv + tSize );
+		glTexCoord2f( tu + tSizeX, tv + tSizeY );
 		glVertex2i( x + w, y );
-		glTexCoord2f( tu + tSize, tv );
+		glTexCoord2f( tu + tSizeX, tv );
 		glVertex2i( x + w, y + h );
 		glTexCoord2f( tu, tv );
 		glVertex2i( x, y + h );

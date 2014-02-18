@@ -11,7 +11,7 @@
 #include "tileLoader.h"
 
 static void keyboard();
-static void backgroundColor();
+static void clearBackground();
 
 enum {R, G, B};
 int currentColor = R;
@@ -26,7 +26,7 @@ int camDelta = 1;
 TileLevel level0;
 int tileSize = 32;
 int g_spriteArraySize;
-Sprite *spriteArray;
+Sprite *spriteArray = NULL;
 
 unsigned char kbPrevState[SDL_NUM_SCANCODES] = {0};
 const unsigned char* kbState = NULL;
@@ -35,7 +35,6 @@ bool shouldExit = false;
 static void init2D()
 {
 	g_cam = Camera(g_windowWidth/2, g_windowHeight/2, 0, g_windowMaxWidth, 0, g_windowMaxHeight);
-	//level0 = TileLevel(g_windowMaxWidth / tileSize, g_windowMaxHeight / tileSize);
 
 	// OpenGL calls
 	glViewport(0,0,(GLsizei) g_windowWidth, (GLsizei) g_windowHeight);
@@ -74,10 +73,10 @@ int main( void )
 	SDL_GL_SetAttribute( SDL_GL_BUFFER_SIZE, 32 );
 	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 	SDL_Window* window = SDL_CreateWindow(
-	"TestSDL",
+	"TileGame",
 	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 	g_windowHeight, g_windowHeight,
-	SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN );
+	SDL_WINDOW_OPENGL);// | SDL_WINDOW_FULLSCREEN );
 
 
 	if( !window ) 
@@ -102,9 +101,8 @@ int main( void )
 
 	// Setup calls
 	init2D();
-	loadLevel();
 	loadSprites();
-	
+	loadLevel();
 
 	// Read keyboard status
 	kbState = SDL_GetKeyboardState( NULL );
@@ -129,6 +127,7 @@ int main( void )
 		keyboard();
 		
 		// All calls to glDrawSprite go here
+		clearBackground();
 		level0.drawLevel(g_cam.x, g_cam.y);
 		for (int i = 0; i < g_spriteArraySize; i++)
 			spriteArray[i].draw();
@@ -140,7 +139,7 @@ int main( void )
 	return 0;
 }
 
-static void backgroundColor()
+static void clearBackground()
 {
 	float r,g,b;
 	r = 0;
@@ -155,18 +154,26 @@ static void keyboard()
 	if (kbState[ SDL_SCANCODE_LEFT ] && !kbPrevState[ SDL_SCANCODE_LEFT ])
 	{
 		g_cam.updateX(-camDelta);
+		cout << "camX = " << g_cam.x << endl;
+		cout << "camY = " << g_cam.y << endl;
 	}
 	else if (kbState[ SDL_SCANCODE_RIGHT ] && !kbPrevState[ SDL_SCANCODE_RIGHT ])
 	{
 		g_cam.updateX(camDelta);
+		cout << "camX = " << g_cam.x << endl;
+		cout << "camY = " << g_cam.y << endl;
 	}
 	else if (kbState[ SDL_SCANCODE_UP ] && !kbPrevState[ SDL_SCANCODE_UP ])
 	{
 		g_cam.updateY(camDelta);
+		cout << "camX = " << g_cam.x << endl;
+		cout << "camY = " << g_cam.y << endl;
 	}
 	else if (kbState[ SDL_SCANCODE_DOWN ] && !kbPrevState[ SDL_SCANCODE_DOWN])
 	{
 		g_cam.updateX(-camDelta);
+		cout << "camX = " << g_cam.x << endl;
+		cout << "camY = " << g_cam.y << endl;
 	}
 	else if (kbState[ SDL_SCANCODE_ESCAPE ])
 	{
