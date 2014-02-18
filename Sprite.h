@@ -9,7 +9,8 @@ public:
 	Sprite::Sprite(GLuint texture, int width, int height);
 	Sprite::Sprite(GLuint texture, int x, int y, int width, int height);
 	~Sprite(void);
-	void Sprite::draw(void);
+	void Sprite::draw(void);\
+	void Sprite::draw(int camX, int camY);
 
 	// Variables
 	GLuint texture;

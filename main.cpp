@@ -6,6 +6,8 @@
 #include <iostream>
 #include "DrawUtils.h"
 #include "Sprite.h"
+#include "Camera.h"
+#include "TileLevel.h"
 
 static void keyboard();
 static void backgroundColor();
@@ -16,7 +18,12 @@ float color[] = {0,0,0};
 float currentDirection = 1;
 int g_windowWidth = 640;
 int g_windowHeight = 480;
-float cam[2] = {g_windowWidth / 2.0f, g_windowHeight / 2.0f};
+int g_windowMaxWidth = g_windowWidth * 3;
+int g_windowMaxHeight = g_windowHeight * 3;
+Camera g_cam;
+int camDelta = 1;
+TileLevel level0;
+int tileSize = 32;
 int g_spriteArraySize;
 Sprite *spriteArray;
 
@@ -26,6 +33,10 @@ bool shouldExit = false;
 
 static void init2D()
 {
+	g_cam = Camera(g_windowWidth/2, g_windowHeight/2, 0, g_windowMaxWidth, 0, g_windowMaxHeight);
+	level0 = TileLevel(g_windowMaxWidth / tileSize, g_windowMaxHeight / tileSize);
+
+	// OpenGL calls
 	glViewport(0,0,(GLsizei) g_windowWidth, (GLsizei) g_windowHeight);
 	glMatrixMode(GL_PROJECTION);
 	glOrtho(0, g_windowWidth, g_windowHeight, 0, 0, 1);
@@ -108,6 +119,7 @@ int main( void )
 		keyboard();
 		
 		// All calls to glDrawSprite go here
+		level0.drawLevel(g_cam.x, g_cam.y);
 		for (int i = 0; i < g_spriteArraySize; i++)
 			spriteArray[i].draw();
 
@@ -137,27 +149,19 @@ static void keyboard()
 {
 	if (kbState[ SDL_SCANCODE_LEFT ] && !kbPrevState[ SDL_SCANCODE_LEFT ])
 	{
-		currentColor--;
-		if (currentColor < 0)
-			currentColor = 2;
-
-		//cout << "currentColor = " << currentColor << endl;
+		g_cam.updateX(-camDelta);
 	}
 	else if (kbState[ SDL_SCANCODE_RIGHT ] && !kbPrevState[ SDL_SCANCODE_RIGHT ])
 	{
-		currentColor++;
-		if (currentColor > 2)
-			currentColor = 0;
-
-		//cout << "currentColor = " << currentColor << endl;
+		g_cam.updateX(camDelta);
 	}
 	else if (kbState[ SDL_SCANCODE_UP ] && !kbPrevState[ SDL_SCANCODE_UP ])
 	{
-		currentDirection = 1;
+		g_cam.updateY(camDelta);
 	}
 	else if (kbState[ SDL_SCANCODE_DOWN ] && !kbPrevState[ SDL_SCANCODE_DOWN])
 	{
-		currentDirection = -1;
+		g_cam.updateX(-camDelta);
 	}
 	else if (kbState[ SDL_SCANCODE_ESCAPE ])
 	{

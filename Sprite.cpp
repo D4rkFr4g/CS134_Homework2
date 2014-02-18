@@ -30,3 +30,8 @@
 	{
 		glDrawSprite(texture, x, y, width, height);
 	}
+
+	void Sprite::draw(int camX, int camY)
+	{
+		glDrawSprite(texture, x - camX, y - camY, width, height);
+	}
