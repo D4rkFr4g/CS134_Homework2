@@ -8,6 +8,7 @@
 #include "Sprite.h"
 #include "Camera.h"
 #include "TileLevel.h"
+#include "tileLoader.h"
 
 static void keyboard();
 static void backgroundColor();
@@ -34,7 +35,7 @@ bool shouldExit = false;
 static void init2D()
 {
 	g_cam = Camera(g_windowWidth/2, g_windowHeight/2, 0, g_windowMaxWidth, 0, g_windowMaxHeight);
-	level0 = TileLevel(g_windowMaxWidth / tileSize, g_windowMaxHeight / tileSize);
+	//level0 = TileLevel(g_windowMaxWidth / tileSize, g_windowMaxHeight / tileSize);
 
 	// OpenGL calls
 	glViewport(0,0,(GLsizei) g_windowWidth, (GLsizei) g_windowHeight);
@@ -45,12 +46,19 @@ static void init2D()
 
 static void loadSprites()
 {
+	// Load Sprites
 	g_spriteArraySize = 1;
 	spriteArray = new Sprite[g_spriteArraySize];
 
 	GLuint texture = glTexImageTGAFile("./Sprites/sprite_chicken.tga", NULL, NULL);
 	Sprite sprite_chicken = Sprite(texture, g_windowWidth/2, g_windowHeight/2, 80, 80);
 	spriteArray[0] = sprite_chicken;
+}
+
+static void loadLevel()
+{
+	// Load TileLevel
+	tileLoader::loadTiles("./Levels/level0.txt", &level0);
 }
 
 using namespace std;
@@ -94,7 +102,9 @@ int main( void )
 
 	// Setup calls
 	init2D();
+	loadLevel();
 	loadSprites();
+	
 
 	// Read keyboard status
 	kbState = SDL_GetKeyboardState( NULL );
@@ -132,15 +142,10 @@ int main( void )
 
 static void backgroundColor()
 {
-	color[currentColor] += currentDirection;
-
-	if (color[currentColor] > 255 || color[currentColor] < 0)
-		currentDirection *= -1;
-
 	float r,g,b;
-	r = color[0] / 255;
-	g = color[1] / 255;
-	b = color[2] / 255;
+	r = 0;
+	g = 0;
+	b = 0;
 	glClearColor(r,g,b,1);
 	glClear(GL_COLOR_BUFFER_BIT);
 }

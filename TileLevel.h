@@ -12,6 +12,7 @@ public:
 
 	// Global Variables
 	int tilesWidth, tilesHeight;
+	int textureSize;
 	Sprite **tileArray;
 };
 

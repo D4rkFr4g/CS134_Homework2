@@ -15,8 +15,11 @@
     <ClCompile Include="DrawUtils.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="TileLevel.cpp" />
+    <ClCompile Include="tileLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Levels\level0.txt" />
     <None Include="SDL2.dll" />
     <None Include="Sprites\sprite_chicken.bmp" />
   </ItemGroup>
@@ -24,6 +27,8 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DrawUtils.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="TileLevel.h" />
+    <ClInclude Include="tileLoader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>Win32Proj</Keyword>

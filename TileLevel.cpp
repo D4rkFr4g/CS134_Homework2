@@ -33,6 +33,6 @@ void TileLevel::drawLevel(int camX, int camY)
 	for (int i = 0; i < tilesWidth; i++)
 	{
 		for (int j = 0; j < tilesHeight; j++)
-			tileArray[i][j].draw(camX, camY);
+			tileArray[i][j].drawTile(camX, camY);
 	}
 }
