@@ -103,7 +103,7 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 	GLfloat tSizeY = (GLfloat) 1.0 / height;
 
 	*level = TileLevel(width, height, tileWidth, tileHeight);
-	level->tileArray;
+	level->tileArray; // Check to see Address is the same
 
 	for (int i = 0; i < height; i++) // Row
 		for (int j = 0; j < width; j++) // Column
