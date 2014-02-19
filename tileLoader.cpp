@@ -47,9 +47,17 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 	getline(infile, line); // [tilesets]
 	getline(infile, line);
 	int start = line.find('.');
-	int end = line.find('.', start+1);
-	int extension = end - start;
-	line = line.substr(8,extension);
+	int offset = start + 1;
+	// Look for .. instead of .
+	string nextChar = line.substr(offset, 1);
+	if (nextChar.compare("."))
+	{
+	  offset++;
+	  start++;
+	}
+	int end = line.find('.', offset+1);
+	int extension = end - offset;
+	line = line.substr(offset,extension);
 	tileFile = line + ".tga";
 
 	getline(infile, line); // Blank line

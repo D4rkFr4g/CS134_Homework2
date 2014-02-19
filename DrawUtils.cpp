@@ -103,7 +103,7 @@ void glDrawSprite( GLuint tex, int x, int y, int w, int h )
    glBindTexture( GL_TEXTURE_2D, tex );
    glBegin( GL_QUADS );
    {
-		glColor3ub( 255, 255, 255 );
+		glColor3ub( 255, 255, 255);
 		glTexCoord2f( 0, 1 );
 		glVertex2i( x, y );
 		glTexCoord2f( 1, 1 );
