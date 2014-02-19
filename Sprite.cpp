@@ -75,5 +75,4 @@
 	{
 		using namespace std;
 		cout << "x = " << x << "\t y = " << y << endl;
-
 	}

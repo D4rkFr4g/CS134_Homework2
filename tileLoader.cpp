@@ -43,13 +43,14 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 
 	getline(infile, line); // Blank line
 
-	// Read tileset filename
+	// Read tileset filename Format: "./optionalFolder/filename.tga"
 	getline(infile, line); // [tilesets]
 	getline(infile, line);
-	int extension = line.find('.');
-	extension -= 8;
+	int start = line.find('.');
+	int end = line.find('.', start+1);
+	int extension = end - start;
 	line = line.substr(8,extension);
-	tileFile = "./Sprites/" + line + ".tga";
+	tileFile = line + ".tga";
 
 	getline(infile, line); // Blank line
 	getline(infile, line); // [layer]
@@ -80,9 +81,7 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 
 			// Debug Check
 			if (0)
-			{
 				cout << line << endl;
-			}
 		}
 	}
 	
@@ -95,30 +94,37 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 	}
 
 	// Load Tileset Texture
-	GLuint tileSet = glTexImageTGAFile(tileFile.c_str(), NULL, NULL);
+	int *tileMapWidth = new int;
+	int *tileMapHeight = new int;
+	GLuint tileSet = glTexImageTGAFile(tileFile.c_str(), tileMapWidth, tileMapHeight);
 
 	// Load tiles to level
 	tileIndex = 0;
-	GLfloat tSizeX = (GLfloat) 1.0 / width;
-	GLfloat tSizeY = (GLfloat) 1.0 / height;
+	int tileMapRows = *tileMapHeight / tileHeight;
+	int tileMapCols = *tileMapWidth / tileWidth;
+	GLfloat tSizeX = (GLfloat) 1.0 / tileMapCols;
+	GLfloat tSizeY = (GLfloat) 1.0 / tileMapRows;
+
 
 	*level = TileLevel(width, height, tileWidth, tileHeight);
-	level->tileArray; // Check to see Address is the same
 
 	for (int i = 0; i < height; i++) // Row
 		for (int j = 0; j < width; j++) // Column
 		{
 			// Find Row / Column texture coords
 			int tilePos = tilesRead[tileIndex];
-			int row = tilePos % height + 1;
-			int column = tilePos % width + 1;
-			tu = row * tSizeX;
-			tv = column * tSizeY;
-			
+			int row = tileMapCols - (tilePos / tileMapCols) - 1; // Flip Y for UV coords
+			int column = tilePos % tileMapCols - 1;
+			tu = column * tSizeX;
+			tv = row * tSizeY;
+
+			//int xPix = tu * *tileMapWidth;
+			//int yPix = tv * *tileMapHeight;
+
 			x = j * tileWidth;
 			y = i * tileHeight;
 
-			level->tileArray[i][j] = Sprite(tileSet, x, y, tileWidth, tileHeight, tu, tv, tSizeX, tSizeY);
+			level->tileArray[i * width + j] = Sprite(tileSet, x, y, tileWidth, tileHeight, tu, tv, tSizeX, tSizeY);
 			tileIndex++;
 		}
 

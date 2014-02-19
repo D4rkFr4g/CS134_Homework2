@@ -19,10 +19,10 @@ float color[] = {0,0,0};
 float currentDirection = 1;
 int g_windowWidth = 640;
 int g_windowHeight = 480;
-int g_windowMaxWidth = g_windowWidth * 3;
-int g_windowMaxHeight = g_windowHeight * 3;
+int g_windowMaxWidth = g_windowWidth * 2;
+int g_windowMaxHeight = g_windowHeight * 2;
 Camera g_cam;
-int camDelta = 2;
+int camDelta = 20;
 TileLevel *level0;
 int tileSize = 32;
 int g_spriteArraySize;
@@ -34,7 +34,7 @@ bool shouldExit = false;
 
 static void init2D()
 {
-	g_cam = Camera(g_windowWidth/2, g_windowHeight/2, 0, g_windowMaxWidth, 0, g_windowMaxHeight);
+	g_cam = Camera(g_windowWidth, g_windowHeight, 0, g_windowMaxWidth, 0, g_windowMaxHeight);
 
 	// OpenGL calls
 	glViewport(0,0,(GLsizei) g_windowWidth, (GLsizei) g_windowHeight);
@@ -57,13 +57,7 @@ static void loadSprites()
 static void loadLevel()
 {
 	level0 = new TileLevel();
-	using namespace std;
-	// Load TileLevel
 	tileLoader::loadTiles("./Levels/level0.txt", level0);
-
-	for (int i = 0; i < level0->width; i++)
-		for (int j = 0; j < level0->height; i++)
-			cout << "[" << i << "][" << j << "] = " << level0->tileArray[i][j].x << ", " << level0->tileArray[i][j].y << endl;
 }
 
 using namespace std;
@@ -82,7 +76,7 @@ int main( void )
 	"TileGame",
 	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 	g_windowHeight, g_windowHeight,
-	SDL_WINDOW_OPENGL);// | SDL_WINDOW_FULLSCREEN );
+	SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN );
 
 
 	if( !window ) 

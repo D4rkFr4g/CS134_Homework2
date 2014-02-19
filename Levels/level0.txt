@@ -5,7 +5,7 @@ tilewidth=32
 tileheight=32
 
 [tilesets]
-tileset=zeldaTileset32.gif,32,32,0,0
+tileset=./Sprites/zeldaTileset32.gif,32,32,0,0
 
 [layer]
 type=Tile Layer 1
