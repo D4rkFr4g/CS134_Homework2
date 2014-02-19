@@ -2,6 +2,15 @@
 
 	Sprite::Sprite(void)
 	{
+		texture = NULL;
+		width = 0;
+		height = 0;
+		x = 0;
+		y = 0;
+		tu = 0;
+		tv = 0;
+		tSizeX = 1;
+		tSizeY = 1;
 	}
 
 	Sprite::Sprite(GLuint texture, int width, int height)

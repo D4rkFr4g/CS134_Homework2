@@ -5,13 +5,14 @@ class TileLevel
 {
 public:
 	TileLevel(void);
-	TileLevel(int tilesWidth, int tilesHeight);
+	TileLevel(int width, int height, int tileWidth, int tileHeight);
 	~TileLevel(void);
 
 	void drawLevel(int camX, int camY);
 
 	// Global Variables
 	int tilesWidth, tilesHeight;
+	int width, height;
 	//int textureSize;
 	Sprite **tileArray;
 };

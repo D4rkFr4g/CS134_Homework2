@@ -22,8 +22,8 @@ int g_windowHeight = 480;
 int g_windowMaxWidth = g_windowWidth * 3;
 int g_windowMaxHeight = g_windowHeight * 3;
 Camera g_cam;
-int camDelta = 1;
-TileLevel level0;
+int camDelta = 2;
+TileLevel *level0;
 int tileSize = 32;
 int g_spriteArraySize;
 Sprite *spriteArray = NULL;
@@ -56,13 +56,14 @@ static void loadSprites()
 
 static void loadLevel()
 {
+	level0 = new TileLevel();
 	using namespace std;
 	// Load TileLevel
-	tileLoader::loadTiles("./Levels/level0.txt", &level0);
+	tileLoader::loadTiles("./Levels/level0.txt", level0);
 
-	for (int i = 0; i < level0.tilesWidth; i++)
-		for (int j = 0; j < level0.tilesHeight; i++)
-			cout << "[" << i << "][" << j << "] = " << level0.tileArray[i][j].x << ", " << level0.tileArray[i][j].y << endl;
+	for (int i = 0; i < level0->width; i++)
+		for (int j = 0; j < level0->height; i++)
+			cout << "[" << i << "][" << j << "] = " << level0->tileArray[i][j].x << ", " << level0->tileArray[i][j].y << endl;
 }
 
 using namespace std;
@@ -133,7 +134,7 @@ int main( void )
 		
 		// All calls to glDrawSprite go here
 		clearBackground();
-		level0.drawLevel(g_cam.x, g_cam.y);
+		level0->drawLevel(g_cam.x, g_cam.y);
 		for (int i = 0; i < g_spriteArraySize; i++)
 			spriteArray[i].draw(g_cam.x, g_cam.y);
 
