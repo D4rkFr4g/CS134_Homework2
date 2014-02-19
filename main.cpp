@@ -76,7 +76,7 @@ int main( void )
 	"TileGame",
 	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 	g_windowHeight, g_windowHeight,
-	SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN );
+	SDL_WINDOW_OPENGL);// | SDL_WINDOW_FULLSCREEN );
 
 
 	if( !window ) 

@@ -105,7 +105,6 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 	GLfloat tSizeX = (GLfloat) 1.0 / tileMapCols;
 	GLfloat tSizeY = (GLfloat) 1.0 / tileMapRows;
 
-
 	*level = TileLevel(width, height, tileWidth, tileHeight);
 
 	for (int i = 0; i < height; i++) // Row
@@ -113,14 +112,12 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 		{
 			// Find Row / Column texture coords
 			int tilePos = tilesRead[tileIndex];
-			int row = tileMapCols - (tilePos / tileMapCols) - 1; // Flip Y for UV coords
-			int column = tilePos % tileMapCols - 1;
+			int row = (tileMapRows-1) - ((tilePos-1) / tileMapCols); // Flip Y for UV coords
+			int column = (tilePos-1) % tileMapCols;
 			tu = column * tSizeX;
 			tv = row * tSizeY;
 
-			//int xPix = tu * *tileMapWidth;
-			//int yPix = tv * *tileMapHeight;
-
+			// Convert to x,y coords
 			x = j * tileWidth;
 			y = i * tileHeight;
 
