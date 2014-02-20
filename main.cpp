@@ -40,7 +40,7 @@ static void init2D()
 	g_cam = Camera(g_windowWidth, g_windowHeight, 0, g_windowMaxWidth, 0, g_windowMaxHeight);
 
 	// OpenGL calls
-	//glViewport(0,0,(GLsizei) g_windowWidth, (GLsizei) g_windowHeight);
+	glViewport(0,0,(GLsizei) g_windowWidth, (GLsizei) g_windowHeight);
 	glMatrixMode(GL_PROJECTION);
 	glOrtho(0, g_windowWidth, g_windowHeight, 0, 0, 1);
 	glEnable(GL_TEXTURE_2D);
@@ -50,6 +50,7 @@ static void init2D()
 
 static void loadSprites()
 {
+	spriteList.reserve(50000);
 	spriteTexture = glTexImageTGAFile("./Sprites/sprite_chicken.tga", NULL, NULL);
 	
 	// Load the Initial chickens
@@ -69,7 +70,7 @@ static void makeChicken()
 static void drawSprites()
 {
 	for (int i = 0; i < (int) spriteList.size(); i++)	
-		spriteList.at(i).draw(g_cam.x, g_cam.y);
+		spriteList[i].draw(g_cam.x, g_cam.y);
 }
 
 static void loadLevel()
