@@ -15,6 +15,8 @@
 		this->tv = 0;
 		this->tSizeX = 1;
 		this->tSizeY = 1;
+		//speedX = 0;
+		//speedY = 0;
 	}
 
 	Sprite::Sprite(GLuint texture, int x, int y, int width, int height)
@@ -28,6 +30,8 @@
 		this->tv = 0;
 		this->tSizeX = 1;
 		this->tSizeY = 1;
+		//speedX = 0;
+		//speedY = 0;
 	}
 
 	Sprite::Sprite(GLuint texture, int x, int y, int width, int height, GLfloat tu, GLfloat tv, GLfloat tSizeX, GLfloat tSizeY)
@@ -41,6 +45,8 @@
 		this->tv = tv;
 		this->tSizeX = tSizeX;
 		this->tSizeY = tSizeY;
+		//speedX = 0;
+		//speedY = 0;
 	}
 
 	Sprite::~Sprite(void)
@@ -62,6 +68,16 @@
 		glDrawSprite(texture, x - camX, y - camY, width, height, tu, tv, tSizeX, tSizeY);
 	}
 
+	void Sprite::update(int ms)
+	{
+	}
+	/*
+	void Sprite::setSpeed(int speedX, int speedY)
+	{
+		this->speedX = speedX;
+		this->speedY = speedY;
+	}
+	*/
 	void Sprite::print()
 	{
 		using namespace std;

@@ -12,7 +12,7 @@ public:
 	~AnimatedSprite(void);
 	
 	// Functions
-	void updateAnimation();
+	void update(int ms);
 	void walking();
 	void idle();
 

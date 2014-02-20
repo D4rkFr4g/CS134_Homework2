@@ -17,8 +17,16 @@ AnimatedSprite::~AnimatedSprite(void)
 {
 }
 
-void AnimatedSprite::updateAnimation()
+void AnimatedSprite::update(int ms)
 {
+	//std::cout << "Updating" << std::endl;
+	curAnimation.updateTime(ms);
+	int currentFrame = curAnimation.currentFrame;
+	AnimationFrame frame = curAnimation.def.frames[currentFrame];
+	tu = frame.tu;
+	tv = frame.tv;
+	tSizeX = frame.tWidth;
+	tSizeY = frame.tHeight;
 }
 
 void AnimatedSprite::walking()

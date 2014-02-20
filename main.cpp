@@ -1,16 +1,20 @@
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
+#include <SDL_timer.h>
 #include <GL/glew.h>
 #include <stdio.h>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
+#include <string>
 #include "DrawUtils.h"
 #include "Sprite.h"
 #include "AnimatedSprite.h"
 #include "Camera.h"
 #include "TileLevel.h"
 #include "tileLoader.h"
+
+using namespace std;
 
 static void keyboard();
 static void clearBackground();
@@ -30,8 +34,10 @@ TileLevel *level0;
 int spriteSize = 64;
 int spriteReserve = 50000;
 int g_spriteArraySize;
-std::vector<Sprite> spriteList;
+std::vector<AnimatedSprite> spriteList;
 GLuint spriteTexture;
+int diff_time;
+int initialChickens = 5;
 
 unsigned char kbPrevState[SDL_NUM_SCANCODES] = {0};
 const unsigned char* kbState = NULL;
@@ -56,7 +62,7 @@ static void loadSprites()
 	spriteTexture = glTexImageTGAFile("./Sprites/spriteSheet_chicken.tga", NULL, NULL);
 	
 	// Load the Initial chickens
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < initialChickens; i++)
 		makeChicken();
 }
 
@@ -68,7 +74,7 @@ static void makeChicken()
 	AnimatedSprite sprite_chicken = AnimatedSprite(spriteTexture, x, y, spriteSize, spriteSize, 0, 0, 0.5, 1);
 	// Walking Animation
 	int numFrames = 2;
-	float timeToNextFrame = 100;
+	int timeToNextFrame = 150;
 	AnimationFrame* frames_walking = new AnimationFrame[numFrames];
 	frames_walking[0] = AnimationFrame(0,0,0.5,1);
 	frames_walking[1] = AnimationFrame(0.5,0,0.5,1);
@@ -80,18 +86,31 @@ static void makeChicken()
 	frames_idle[0] = AnimationFrame(0,0,0.5,1);
 	Animation animation_idle = Animation("Idle", frames_idle, numFrames);
 	sprite_chicken.idleAnimation = AnimationData(animation_idle, timeToNextFrame);
+	sprite_chicken.walking();
+	/*
+	// Set Chicken direction
+	int speedX = rand() % 2 - 1;
+	int speedY = rand() % 2 - 1;
+	int negation = rand() % 2 - 1;
+	if (negation)
+		speedX *= -1;
+	negation = rand() % 2 - 1;
+	if (negation)
+		speedX *= -1;
 
+	sprite_chicken.setSpeed(speedX, speedY);
+	*/
 	spriteList.push_back(sprite_chicken);
 }
 
-static void updateSprites()
+Uint32 updateSprites(Uint32 interval, void *param)
 {
 	for (int i = 0; i < (int) spriteList.size(); i++)
 	{
-		string type = typeid(spriteList[i]).name();
-		if (!type.compare("AnimatedSprite\n"))
-			static_cast<AnimatedSprite&>(spriteList[i]).updateAnimation();
+		spriteList[i].update(diff_time);
 	}
+
+	return interval;
 }
 
 static void drawSprites()
@@ -110,7 +129,7 @@ using namespace std;
 int main( void )
 {	
 	// Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) 
+	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0 ) 
 	{
 		return 1;
 	}
@@ -119,7 +138,7 @@ int main( void )
 	SDL_GL_SetAttribute( SDL_GL_BUFFER_SIZE, 32 );
 	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 	SDL_Window* window = SDL_CreateWindow(
-	"TileGame",
+	"Invincible Chickens",
 	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 	g_windowHeight, g_windowHeight,
 	SDL_WINDOW_OPENGL);// | SDL_WINDOW_FULLSCREEN );
@@ -149,6 +168,11 @@ int main( void )
 	init2D();
 	loadSprites();
 	loadLevel();
+	SDL_TimerID spriteTimer = SDL_AddTimer(33, updateSprites, (void *) "spriteTimer Callback");
+
+	int last_time = 0;
+	int cur_time = 0;
+	diff_time = 0;
 
 	// Read keyboard status
 	kbState = SDL_GetKeyboardState( NULL );
@@ -171,13 +195,17 @@ int main( void )
 
 		// Game logic goes here
 		keyboard();
+
+		// Timer updates
+		cur_time = SDL_GetTicks();
+		diff_time = cur_time - last_time;
+		last_time = cur_time;
 		
 		// All calls to glDrawSprite go here
 		clearBackground();
 		level0->drawLevel(g_cam.x, g_cam.y);
-		updateSprites();
 		drawSprites();
-		
+
 		SDL_GL_SwapWindow( window );
 	}
 
