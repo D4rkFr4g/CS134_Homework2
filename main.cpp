@@ -7,6 +7,7 @@
 #include <vector>
 #include "DrawUtils.h"
 #include "Sprite.h"
+#include "AnimatedSprite.h"
 #include "Camera.h"
 #include "TileLevel.h"
 #include "tileLoader.h"
@@ -27,6 +28,7 @@ Camera g_cam;
 int camDelta = 20;
 TileLevel *level0;
 int spriteSize = 64;
+int spriteReserve = 50000;
 int g_spriteArraySize;
 std::vector<Sprite> spriteList;
 GLuint spriteTexture;
@@ -50,8 +52,8 @@ static void init2D()
 
 static void loadSprites()
 {
-	spriteList.reserve(50000);
-	spriteTexture = glTexImageTGAFile("./Sprites/sprite_chicken.tga", NULL, NULL);
+	spriteList.reserve(spriteReserve);
+	spriteTexture = glTexImageTGAFile("./Sprites/spriteSheet_chicken.tga", NULL, NULL);
 	
 	// Load the Initial chickens
 	for (int i = 0; i < 5; i++)
@@ -63,14 +65,39 @@ static void makeChicken()
 	int x = rand() % ((g_windowWidth * 3) - spriteSize);
 	int y = rand() % ((g_windowHeight *3) - spriteSize);
 
-	Sprite sprite_chicken = Sprite(spriteTexture, x, y, spriteSize, spriteSize);
+	AnimatedSprite sprite_chicken = AnimatedSprite(spriteTexture, x, y, spriteSize, spriteSize, 0, 0, 0.5, 1);
+	// Walking Animation
+	int numFrames = 2;
+	float timeToNextFrame = 100;
+	AnimationFrame* frames_walking = new AnimationFrame[numFrames];
+	frames_walking[0] = AnimationFrame(0,0,0.5,1);
+	frames_walking[1] = AnimationFrame(0.5,0,0.5,1);
+	Animation animation_walking = Animation("Walking", frames_walking, numFrames);
+	sprite_chicken.walkingAnimation = AnimationData(animation_walking, timeToNextFrame);
+	// Idle Animation
+	numFrames = 1;
+	AnimationFrame* frames_idle = new AnimationFrame[numFrames];
+	frames_idle[0] = AnimationFrame(0,0,0.5,1);
+	Animation animation_idle = Animation("Idle", frames_idle, numFrames);
+	sprite_chicken.idleAnimation = AnimationData(animation_idle, timeToNextFrame);
+
 	spriteList.push_back(sprite_chicken);
+}
+
+static void updateSprites()
+{
+	for (int i = 0; i < (int) spriteList.size(); i++)
+	{
+		string type = typeid(spriteList[i]).name();
+		if (!type.compare("AnimatedSprite\n"))
+			static_cast<AnimatedSprite&>(spriteList[i]).updateAnimation();
+	}
 }
 
 static void drawSprites()
 {
 	for (int i = 0; i < (int) spriteList.size(); i++)	
-		spriteList[i].draw(g_cam.x, g_cam.y);
+		spriteList[i].drawUV(g_cam.x, g_cam.y);
 }
 
 static void loadLevel()
@@ -148,6 +175,7 @@ int main( void )
 		// All calls to glDrawSprite go here
 		clearBackground();
 		level0->drawLevel(g_cam.x, g_cam.y);
+		updateSprites();
 		drawSprites();
 		
 		SDL_GL_SwapWindow( window );

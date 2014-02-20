@@ -57,7 +57,7 @@
 		glDrawSprite(texture, x - camX, y - camY, width, height);
 	}
 
-	void Sprite::drawTile(int camX, int camY)
+	void Sprite::drawUV(int camX, int camY)
 	{
 		glDrawSprite(texture, x - camX, y - camY, width, height, tu, tv, tSizeX, tSizeY);
 	}

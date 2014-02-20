@@ -36,14 +36,32 @@
     <ClCompile Include="tileLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AnimatedSprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL2.dll" />
-    <None Include="Sprites\sprite_chicken.bmp">
-      <Filter>Sprites</Filter>
-    </None>
     <None Include="Levels\level0.txt">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Sprites\sprite_chicken.tga">
+      <Filter>Sprites</Filter>
+    </None>
+    <None Include="Sprites\zeldaTileset16.tga">
+      <Filter>Sprites</Filter>
+    </None>
+    <None Include="Sprites\spriteSheet_chicken.tga">
+      <Filter>Sprites</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +78,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tileLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedSprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

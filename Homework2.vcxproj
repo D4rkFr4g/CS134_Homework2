@@ -11,6 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimatedSprite.cpp" />
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="AnimationData.cpp" />
+    <ClCompile Include="AnimationFrame.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DrawUtils.cpp" />
     <ClCompile Include="main.cpp" />
@@ -21,9 +25,15 @@
   <ItemGroup>
     <None Include="Levels\level0.txt" />
     <None Include="SDL2.dll" />
-    <None Include="Sprites\sprite_chicken.bmp" />
+    <None Include="Sprites\spriteSheet_chicken.tga" />
+    <None Include="Sprites\sprite_chicken.tga" />
+    <None Include="Sprites\zeldaTileset16.tga" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimatedSprite.h" />
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="AnimationData.h" />
+    <ClInclude Include="AnimationFrame.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DrawUtils.h" />
     <ClInclude Include="Sprite.h" />

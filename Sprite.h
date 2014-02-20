@@ -16,7 +16,7 @@ public:
 	//Functions
 	void Sprite::draw(void);
 	void Sprite::draw(int camX, int camY);
-	void Sprite::drawTile(int camX, int camY);
+	void Sprite::drawUV(int camX, int camY);
 	void Sprite::print();
 
 	// Variables
