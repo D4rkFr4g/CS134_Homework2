@@ -1,9 +1,10 @@
 #define SDL_MAIN_HANDLED
-#include<SDL.h>
-#include<GL/glew.h>
-#include<stdio.h>
+#include <SDL.h>
+#include <GL/glew.h>
+#include <stdio.h>
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 #include "DrawUtils.h"
 #include "Sprite.h"
 #include "Camera.h"
@@ -12,6 +13,7 @@
 
 static void keyboard();
 static void clearBackground();
+static void makeChicken();
 
 enum {R, G, B};
 int currentColor = R;
@@ -24,9 +26,10 @@ int g_windowMaxHeight = g_windowHeight * 2;
 Camera g_cam;
 int camDelta = 20;
 TileLevel *level0;
-int tileSize = 32;
+int spriteSize = 64;
 int g_spriteArraySize;
-Sprite *spriteArray = NULL;
+std::vector<Sprite> spriteList;
+GLuint spriteTexture;
 
 unsigned char kbPrevState[SDL_NUM_SCANCODES] = {0};
 const unsigned char* kbState = NULL;
@@ -37,21 +40,36 @@ static void init2D()
 	g_cam = Camera(g_windowWidth, g_windowHeight, 0, g_windowMaxWidth, 0, g_windowMaxHeight);
 
 	// OpenGL calls
-	glViewport(0,0,(GLsizei) g_windowWidth, (GLsizei) g_windowHeight);
+	//glViewport(0,0,(GLsizei) g_windowWidth, (GLsizei) g_windowHeight);
 	glMatrixMode(GL_PROJECTION);
 	glOrtho(0, g_windowWidth, g_windowHeight, 0, 0, 1);
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 static void loadSprites()
 {
-	// Load Sprites
-	g_spriteArraySize = 1;
-	spriteArray = new Sprite[g_spriteArraySize];
+	spriteTexture = glTexImageTGAFile("./Sprites/sprite_chicken.tga", NULL, NULL);
+	
+	// Load the Initial chickens
+	for (int i = 0; i < 5; i++)
+		makeChicken();
+}
 
-	GLuint texture = glTexImageTGAFile("./Sprites/sprite_chicken.tga", NULL, NULL);
-	Sprite sprite_chicken = Sprite(texture, g_windowWidth/2, g_windowHeight/2, 80, 80);
-	spriteArray[0] = sprite_chicken;
+static void makeChicken()
+{
+	int x = rand() % ((g_windowWidth * 3) - spriteSize);
+	int y = rand() % ((g_windowHeight *3) - spriteSize);
+
+	Sprite sprite_chicken = Sprite(spriteTexture, x, y, spriteSize, spriteSize);
+	spriteList.push_back(sprite_chicken);
+}
+
+static void drawSprites()
+{
+	for (int i = 0; i < (int) spriteList.size(); i++)	
+		spriteList.at(i).draw(g_cam.x, g_cam.y);
 }
 
 static void loadLevel()
@@ -76,7 +94,7 @@ int main( void )
 	"TileGame",
 	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 	g_windowHeight, g_windowHeight,
-	SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN );
+	SDL_WINDOW_OPENGL);// | SDL_WINDOW_FULLSCREEN );
 
 
 	if( !window ) 
@@ -129,9 +147,8 @@ int main( void )
 		// All calls to glDrawSprite go here
 		clearBackground();
 		level0->drawLevel(g_cam.x, g_cam.y);
-		for (int i = 0; i < g_spriteArraySize; i++)
-			spriteArray[i].draw(g_cam.x, g_cam.y);
-
+		drawSprites();
+		
 		SDL_GL_SwapWindow( window );
 	}
 
@@ -170,5 +187,16 @@ static void keyboard()
 	else if (kbState[ SDL_SCANCODE_ESCAPE ])
 	{
 		shouldExit = true;
+	}
+	else if (kbState[ SDL_SCANCODE_EQUALS] | kbState[ SDL_SCANCODE_KP_PLUS ])
+	{
+		makeChicken();
+	}
+else if (kbState[SDL_SCANCODE_MINUS] || kbState[SDL_SCANCODE_KP_MINUS])
+	{
+		if (spriteList.size() > 0)
+		{
+			spriteList.pop_back();
+		}
 	}
 }
