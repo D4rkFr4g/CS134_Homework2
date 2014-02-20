@@ -32,10 +32,13 @@ void AnimatedSprite::update(int ms)
 	curAnimation.updateTime(ms);
 	int currentFrame = curAnimation.currentFrame;
 	AnimationFrame frame = curAnimation.def.frames[currentFrame];
-	tu = frame.tu;
-	tv = frame.tv;
-	tSizeX = frame.tWidth;
-	tSizeY = frame.tHeight;
+	if (isAnimated)
+	{
+		tu = frame.tu;
+		tv = frame.tv;
+		tSizeX = frame.tWidth;
+		tSizeY = frame.tHeight;
+	}
 }
 
 void AnimatedSprite::walking()

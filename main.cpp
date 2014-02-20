@@ -38,7 +38,7 @@ int g_spriteArraySize;
 std::vector<AnimatedSprite> spriteList;
 GLuint spriteTexture;
 int diff_time;
-int initialChickens = 5;
+int initialChickens = 20;
 int chickenSpeed = 50;
 
 unsigned char kbPrevState[SDL_NUM_SCANCODES] = {0};
@@ -110,14 +110,16 @@ Uint32 chickenAI(Uint32 interval, void *param)
 {
 	for (int i = 0; i < (int) spriteList.size(); i++)
 	{
-		int speedX = spriteList[i].speedX;
-		int speedY = spriteList[i].speedY;
+		AnimatedSprite* chicken = &spriteList[i];
+		int speedX = chicken->speedX;
+		int speedY = chicken->speedY;
 
 		// If stopped Restart Chicken
 		if (speedX == 0 && speedY == 0)
 		{
 			speedX = getSpeed();
 			speedY = getSpeed();
+			chicken->walking();
 		}
 		else
 		{
@@ -127,9 +129,10 @@ Uint32 chickenAI(Uint32 interval, void *param)
 			{
 				speedX = 0;
 				speedY = 0;
+				chicken->idle();
 			}
 		}
-		spriteList[i].setSpeed(speedX, speedY);
+		chicken->setSpeed(speedX, speedY);
 	}
 
 	return interval;
@@ -172,7 +175,7 @@ int main( void )
 	"Invincible Chickens",
 	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 	g_windowHeight, g_windowHeight,
-	SDL_WINDOW_OPENGL);// | SDL_WINDOW_FULLSCREEN );
+	SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN );
 
 
 	if( !window ) 
