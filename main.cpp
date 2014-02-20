@@ -19,6 +19,7 @@ using namespace std;
 static void keyboard();
 static void clearBackground();
 static void makeChicken();
+static int getSpeed();
 
 enum {R, G, B};
 int currentColor = R;
@@ -38,6 +39,7 @@ std::vector<AnimatedSprite> spriteList;
 GLuint spriteTexture;
 int diff_time;
 int initialChickens = 5;
+int chickenSpeed = 50;
 
 unsigned char kbPrevState[SDL_NUM_SCANCODES] = {0};
 const unsigned char* kbState = NULL;
@@ -87,19 +89,10 @@ static void makeChicken()
 	Animation animation_idle = Animation("Idle", frames_idle, numFrames);
 	sprite_chicken.idleAnimation = AnimationData(animation_idle, timeToNextFrame);
 	sprite_chicken.walking();
-	/*
+	
 	// Set Chicken direction
-	int speedX = rand() % 2 - 1;
-	int speedY = rand() % 2 - 1;
-	int negation = rand() % 2 - 1;
-	if (negation)
-		speedX *= -1;
-	negation = rand() % 2 - 1;
-	if (negation)
-		speedX *= -1;
+	sprite_chicken.setSpeed(getSpeed(), getSpeed());
 
-	sprite_chicken.setSpeed(speedX, speedY);
-	*/
 	spriteList.push_back(sprite_chicken);
 }
 
@@ -111,6 +104,44 @@ Uint32 updateSprites(Uint32 interval, void *param)
 	}
 
 	return interval;
+}
+
+Uint32 chickenAI(Uint32 interval, void *param)
+{
+	for (int i = 0; i < (int) spriteList.size(); i++)
+	{
+		int speedX = spriteList[i].speedX;
+		int speedY = spriteList[i].speedY;
+
+		// If stopped Restart Chicken
+		if (speedX == 0 && speedY == 0)
+		{
+			speedX = getSpeed();
+			speedY = getSpeed();
+		}
+		else
+		{
+			// Randomly stop chickens
+			int willStop = rand() % 2 - 1;
+			if (willStop)
+			{
+				speedX = 0;
+				speedY = 0;
+			}
+		}
+		spriteList[i].setSpeed(speedX, speedY);
+	}
+
+	return interval;
+}
+
+static int getSpeed()
+{
+	int speed = rand() % 2 - 1;
+	int negation = rand() % 2 - 1;
+	if (negation)
+		speed *= -1;
+	return speed * chickenSpeed;
 }
 
 static void drawSprites()
@@ -169,7 +200,7 @@ int main( void )
 	loadSprites();
 	loadLevel();
 	SDL_TimerID spriteTimer = SDL_AddTimer(33, updateSprites, (void *) "spriteTimer Callback");
-
+	SDL_TimerID AITimer = SDL_AddTimer(2000, chickenAI, (void *) "chickenAI Callback");
 	int last_time = 0;
 	int cur_time = 0;
 	diff_time = 0;

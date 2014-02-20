@@ -18,7 +18,7 @@ public:
 	void Sprite::draw(int camX, int camY);
 	void Sprite::drawUV(int camX, int camY);
 	virtual void Sprite::update(int ms);
-	//virtual void Sprite::setSpeed();
+	virtual void Sprite::setSpeed(int speedX, int speedY);
 	void Sprite::print();
 
 	// Variables
@@ -27,8 +27,8 @@ public:
 	int x, y;
 	GLfloat tu, tv;
 	GLfloat tSizeX, tSizeY;
-	//int stuff;
-	//int speedX, speedY;
+	int speedX, speedY;
+	float posX, posY;
 
 private:
 

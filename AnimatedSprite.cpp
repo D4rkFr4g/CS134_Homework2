@@ -19,7 +19,16 @@ AnimatedSprite::~AnimatedSprite(void)
 
 void AnimatedSprite::update(int ms)
 {
-	//std::cout << "Updating" << std::endl;
+	// Update Position
+   float time = (float)ms / 1000;
+	float deltaX = time * speedX;
+	float deltaY = time * speedY;
+	posX += deltaX;
+	posY += deltaY;
+	x = (int) floor(posX);
+	y = (int) floor(posY);
+	
+	// Update Animation
 	curAnimation.updateTime(ms);
 	int currentFrame = curAnimation.currentFrame;
 	AnimationFrame frame = curAnimation.def.frames[currentFrame];
