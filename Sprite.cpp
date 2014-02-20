@@ -72,12 +72,13 @@
 	{
 	}
 	/*
-	void Sprite::setSpeed(int speedX, int speedY)
+	void Sprite::setSpeed()
 	{
-		this->speedX = speedX;
-		this->speedY = speedY;
+		//this->speedX = speedX;
+		//this->speedY = speedY;
 	}
 	*/
+	
 	void Sprite::print()
 	{
 		using namespace std;

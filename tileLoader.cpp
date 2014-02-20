@@ -129,7 +129,8 @@ void tileLoader::loadTiles(const char* filename, TileLevel *level)
 			x = j * tileWidth;
 			y = i * tileHeight;
 
-			level->tileArray[i * width + j] = Sprite(tileSet, x, y, tileWidth, tileHeight, tu, tv, tSizeX, tSizeY);
+			//level->tileArray[i * width + j] = Sprite(tileSet, x, y, tileWidth, tileHeight, tu, tv, tSizeX, tSizeY);
+			level->tileArray.push_back(Sprite(tileSet, x, y, tileWidth, tileHeight, tu, tv, tSizeX, tSizeY));
 			tileIndex++;
 		}
 

@@ -12,13 +12,14 @@ TileLevel::TileLevel(int width, int height, int tilesWidth, int tilesHeight)
 	this->tilesWidth = tilesWidth;
 	this->tilesHeight = tilesHeight;
 
-	this->tileArray = new Sprite[width * height];
+	//this->tileArray = new Sprite[width * height];
+	this->tileArray.reserve(width * height);
 }
 
 
 TileLevel::~TileLevel(void)
 {
-	delete[] tileArray;
+	//delete[] tileArray;
 }
 
 

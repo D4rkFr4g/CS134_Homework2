@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include <vector>
 
 #pragma once
 class TileLevel
@@ -13,6 +14,6 @@ public:
 	// Global Variables
 	int tilesWidth, tilesHeight;
 	int width, height;
-	Sprite *tileArray;
+	std::vector<Sprite> tileArray;
 };
 
