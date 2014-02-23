@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <time.h>
 #include "DrawUtils.h"
 #include "Sprite.h"
 #include "AnimatedSprite.h"
@@ -38,7 +39,7 @@ int g_spriteArraySize;
 std::vector<AnimatedSprite> spriteList;
 GLuint spriteTexture;
 int diff_time;
-int initialChickens = 1000;
+int initialChickens = 20;
 int chickenSpeed = 50;
 
 unsigned char kbPrevState[SDL_NUM_SCANCODES] = {0};
@@ -93,6 +94,12 @@ static void makeChicken()
 	
 	// Set Chicken direction
 	sprite_chicken.setSpeed(getSpeed(), getSpeed());
+
+	// Set direction
+	if (sprite_chicken.speedX < 0)
+		sprite_chicken.isFlippedX = true;
+	else if (sprite_chicken.speedX > 0)
+		sprite_chicken.isFlippedX = false;
 
 	spriteList.push_back(sprite_chicken);
 }
@@ -170,6 +177,8 @@ static void loadLevel()
 using namespace std;
 int main( void )
 {	
+	srand(time(NULL));
+
 	// Initialize SDL
 	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0 ) 
 	{
