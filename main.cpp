@@ -38,7 +38,7 @@ int g_spriteArraySize;
 std::vector<AnimatedSprite> spriteList;
 GLuint spriteTexture;
 int diff_time;
-int initialChickens = 20;
+int initialChickens = 1000;
 int chickenSpeed = 50;
 
 unsigned char kbPrevState[SDL_NUM_SCANCODES] = {0};
@@ -56,6 +56,7 @@ static void init2D()
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_COLOR);  //Ghost Chickens
 }
 
 static void loadSprites()
@@ -120,11 +121,17 @@ Uint32 chickenAI(Uint32 interval, void *param)
 			speedX = getSpeed();
 			speedY = getSpeed();
 			chicken->walking();
+
+			// Set direction
+			if (speedX < 0)
+				chicken->isFlippedX = true;
+			else if (speedX > 0)
+				chicken->isFlippedX = false;
 		}
 		else
 		{
 			// Randomly stop chickens
-			int willStop = rand() % 2 - 1;
+			int willStop = rand() % 2;
 			if (willStop)
 			{
 				speedX = 0;
@@ -132,6 +139,7 @@ Uint32 chickenAI(Uint32 interval, void *param)
 				chicken->idle();
 			}
 		}
+
 		chicken->setSpeed(speedX, speedY);
 	}
 
@@ -140,8 +148,8 @@ Uint32 chickenAI(Uint32 interval, void *param)
 
 static int getSpeed()
 {
-	int speed = rand() % 2 - 1;
-	int negation = rand() % 2 - 1;
+	int speed = rand() % 2;
+	int negation = rand() % 2;
 	if (negation)
 		speed *= -1;
 	return speed * chickenSpeed;
@@ -176,6 +184,7 @@ int main( void )
 	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 	g_windowHeight, g_windowHeight,
 	SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN );
+	glCullFace( GL_BACK );
 
 
 	if( !window ) 

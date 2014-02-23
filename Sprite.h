@@ -19,6 +19,8 @@ public:
 	void Sprite::drawUV(int camX, int camY);
 	virtual void Sprite::update(int ms);
 	virtual void Sprite::setSpeed(int speedX, int speedY);
+	void Sprite::flipX();
+	void Sprite::flipY();
 	void Sprite::print();
 
 	// Variables
@@ -29,6 +31,8 @@ public:
 	GLfloat tSizeX, tSizeY;
 	int speedX, speedY;
 	float posX, posY;
+	bool isFlippedX;
+	bool isFlippedY;
 
 private:
 
